@@ -13,21 +13,31 @@ function crawl(response, site) {
                 "maxConnections": 10,
                 //called after a page is crawled
                 "callback": function(error, result, $) {
-                    
+                    console.log("Ran");
                     if (result) {
                         var page = result.body,
-                            res = page.match(/(src|href)\s*=\s*"([^"]*)"/g);
-                        for (var i = 0; i < res.length; i++) {
-                            res[i] = res[i].match(/"(.+)"$/)[0]
-                        }
+                            res = [],
+                            temp = page.match(/(src|href)\s*=\s*"([^"]*)"/g);
+                        console.log(temp)
+                        for (var i = 0; i < temp.length; i++) {
+                            
+                            var match = temp[i].match(/"(.+)"$/)
+                            if (match){
+                                res[res.length] = match[1]
+                                console.log(match[1])
+                            }
 
+                        }
+                        console.log(res);
                         if (res && res.length > 0) {
                             for (var i = 0; i < res.length; i++) {
                                 //files.push(res[i][1]);
                                 if (res[i].search("http") != -1)
                                     c.queue(res[i]);
-                                else
+                                else{
+                                    console.log(result.request.uri.host + res[i]);
                                     c.queue(result.request.uri.protocal + result.request.uri.host + res[i]);
+                                }
                             }
 
                             var filename;
