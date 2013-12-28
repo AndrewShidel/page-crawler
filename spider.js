@@ -28,9 +28,10 @@ function crawl(response, site) {
                             }
 
                         }
-                        console.log(res);
+                        console.log(res.length);
                         if (res && res.length > 0) {
                             for (var i = 0; i < res.length; i++) {
+
                                 //files.push(res[i][1]);
                                 if (res[i].search("http") != -1)
                                     c.queue(res[i]);
@@ -51,12 +52,12 @@ function crawl(response, site) {
 
                             //fs.writeFile("","")
                             //zip.addLocalFolder("d/");
-                            zip.addFile(filename, new Buffer(page), "Something");
+                            //zip.addFile(filename, new Buffer(page), "Something");
 
-                            zip.writeZip( /*target file name*/ "test.zip");
+                            //zip.writeZip( /*target file name*/ "test.zip");
 
-                            response.download(__dirname + '/test.zip', "test.zip");
-
+                            //response.download(__dirname + '/test.zip', "test.zip"); 
+                            
                         }
                     }
                 }
