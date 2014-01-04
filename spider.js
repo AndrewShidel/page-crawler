@@ -3,7 +3,8 @@ var Crawler = require("crawler").Crawler,
 
 function crawl(socket, data) {
     var term = data[1];
-    var root = data[2]
+    var root = data[2],
+        next = true;
     console.log('data::'+data)
     var c = new Crawler({
         "maxConnections": 10,
@@ -20,7 +21,7 @@ function crawl(socket, data) {
                 }
 
                 $("a").each(function(index, a) {
-                    if (url.parse(a.href).hostname == root){
+                    if (url.parse(a.href).hostname == root && next){
                         c.queue(a.href);
                     }
                 });
@@ -51,6 +52,9 @@ function crawl(socket, data) {
 
     c.queue(data[0]);
 
+    socket.on('disconnect', function () {
+        next = false;
+    });
 }
 
 exports.crawl = crawl;
