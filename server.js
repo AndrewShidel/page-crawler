@@ -3,28 +3,18 @@ var express = require('express'),
     url = require("url"),
     server = http.createServer(function(request, response) {}),
     spider = require("./spider"),
-    site;
+    site,
+    io = require('socket.io').listen(1234);
 
-server.listen(1234, function() {
-    console.log((new Date()) + ' Server is listening on port 1234');
+io.sockets.on('connection', function (socket) {
+   
+    socket.on('my other event', function (data) {
+    spider.crawl(socket, data); 
+  });
 });
 
-var WebSocketServer = require('websocket').server;
-wsServer = new WebSocketServer({
-    httpServer: server
-});
 
-wsServer.on('request', function(r){
-    // Code here to run on connection
-    var connection = r.accept('echo-protocol', r.origin);
 
-    // Create event listener
-    connection.on('message', function(message) {
 
-        spider.crawl(connection, message.utf8Data);
-
-    })
-
-});
 
 //exports.start = start;

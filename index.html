@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <script src="socket.io.min.js"></script>
+    <script src="jquery.js"></script>
     <style type="text/css">
     body {
         background-color: rgb(248, 248, 248);
@@ -58,12 +60,6 @@
         -webkit-box-shadow: none;
         box-shadow: none;
     }
-    #note {
-        position: absolute;
-        left: 728px;
-        top: 208px;
-        font-size: 16pt;
-    }
     </style>
 
 </head>
@@ -77,38 +73,38 @@
         <h3>Enter desired URL</h3>
 
         <input type='text' value="" id='url'></input>
+        <h3>And Search Term</h3>
+        <input type='text' value="" id='term'></input>
         <p>
             <input id='submit' type="submit" value="Submit" class="btn">
         </p>
 
-        <p id='note'>*omit http://</p>
+        <div id='linkHold'>
+
+        </div>
+
+
 
 
     </div>
 
     <script>
-    var url;
+    var links = $("#linkHold"),
+        socket = io.connect('//localhost:1234');
 
-    var ws = new WebSocket('ws://localhost:1234', 'echo-protocol');
+    socket.on('hit', function(data) {
+        console.log(data);
 
-    ws.addEventListener("message", function(e) {
-        var msg = e.data,
-        contain = document.getElementById('container');
-        if (msg.indexOf(":::") != -1){
-            console.log("\n\n\n\n\n\n\n"+msg+"\n\n\n\n\n\n\n");
-            contain.innerHTML += msg
-        }
-        console.log(msg);
+        links.prepend("<p>" + data + "</p>");
+
     });
 
 
     document.getElementById("submit").addEventListener('click', function(event) {
 
-        ws.send(document.getElementById('url').value);
 
-        //url = document.getElementById('url').value
+        socket.emit('my other event', [document.getElementById('url').value, document.getElementById('url').value]);
 
-        //window.location = url;
 
     });
     </script>

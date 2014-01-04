@@ -1,27 +1,23 @@
 var Crawler = require("crawler").Crawler;
 
-function crawl(connection, site) {
-	var term = "the";
+function crawl(socket, data) {
+	var term = data[1];
 	var c = new Crawler({
 		"maxConnections": 10,
                 //called after a page is crawled
                 "callback": function(error, result, $) {
                 	if ($){
-                		console.log(error);
-                		console.log("Ran");
+                		
                 		var regex = new RegExp(term, "i");
                 		if(result){
                 			var page = result.body; 
                 			var res = page.match(regex);
                 			if (res && res.length > 0){
-                				connection.sendUTF(":::"+result.request.uri.path);
-                				console.log(result.body);
+                				 socket.emit('hit',result.request.uri.href);
                 			}
                 		}
 
                 		$("a").each(function(index,a) {
-                			console.log(a.href);
-                			connection.sendUTF(a.href);
                 			c.queue(a.href);
                 		});
 
@@ -49,7 +45,7 @@ function crawl(connection, site) {
 
        });
 
-c.queue(site);
+c.queue(data[0]);
 
 }
 
