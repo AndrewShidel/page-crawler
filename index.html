@@ -36,7 +36,6 @@
         border: 2px solid #27ae60;
         outline: none;
     }
-   
     .btn {
         position: relative;
         vertical-align: top;
@@ -61,7 +60,7 @@
         -webkit-box-shadow: none;
         box-shadow: none;
     }
-     #submit {
+    #submit {
         padding-bottom: 51px;
         border-bottom: 1px solid;
     }
@@ -140,7 +139,7 @@
         <h3>And Search Term</h3>
         <input type='text' value="" id='term'></input>
         <p id='submit'>
-            <input  type="submit" value="Submit" class="btn">
+            <input type="submit" value="Submit" class="btn">
         </p>
 
         <div id='linkHold'>
@@ -166,8 +165,8 @@
 
     document.getElementById("submit").addEventListener('click', function(event) {
 
-
-        socket.emit('submit', [document.getElementById('url').value, document.getElementById('url').value]);
+        var host = (document.getElementById('url').value).match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+        socket.emit('submit', [document.getElementById('url').value, document.getElementById('term').value, host[1]]);
 
 
     });
