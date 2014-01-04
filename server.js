@@ -8,7 +8,7 @@ var express = require('express'),
 
 io.sockets.on('connection', function (socket) {
    
-    socket.on('my other event', function (data) {
+    socket.on('submit', function (data) {
     spider.crawl(socket, data); 
   });
 });

@@ -36,6 +36,7 @@
         border: 2px solid #27ae60;
         outline: none;
     }
+   
     .btn {
         position: relative;
         vertical-align: top;
@@ -60,6 +61,69 @@
         -webkit-box-shadow: none;
         box-shadow: none;
     }
+     #submit {
+        padding-bottom: 51px;
+        border-bottom: 1px solid;
+    }
+    .btn2 {
+        height: 32px;
+        line-height: 27px;
+        padding: 0;
+        font-size: 18px;
+        color: #FFF;
+        text-align: center;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        background: #28759A;
+        border: 0;
+        border-bottom: 2px solid #115372;
+        cursor: pointer;
+        -webkit-box-shadow: inset 0 -2px #219D55;
+        box-shadow: inset 0 -2px #115372;
+        border-radius: 10px;
+        text-decoration: none;
+    }
+    .btn2:active {
+        top: 1px;
+        outline: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    .btn3 {
+        position: relative;
+        height: 32px;
+        line-height: 27px;
+        padding: 0;
+        font-size: 18px;
+        color: #FFF;
+        text-align: center;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        background: #27AE60;
+        border: 0;
+        border-bottom: 2px solid #219D55;
+        cursor: pointer;
+        -webkit-box-shadow: inset 0 -2px #219D55;
+        box-shadow: inset 0 -2px #219D55;
+        border-radius: 10px;
+    }
+    .btn3:active {
+        top: 1px;
+        outline: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    .download {
+        width: 11%;
+        display: inline-block;
+    }
+    .view {
+        width: 8%;
+        display: inline-block;
+        margin-right: 22%;
+    }
+    .ref {
+        display: inline-block;
+        width: 40%;
+    }
     </style>
 
 </head>
@@ -75,8 +139,8 @@
         <input type='text' value="" id='url'></input>
         <h3>And Search Term</h3>
         <input type='text' value="" id='term'></input>
-        <p>
-            <input id='submit' type="submit" value="Submit" class="btn">
+        <p id='submit'>
+            <input  type="submit" value="Submit" class="btn">
         </p>
 
         <div id='linkHold'>
@@ -95,7 +159,7 @@
     socket.on('hit', function(data) {
         console.log(data);
 
-        links.prepend("<p>" + data + "</p>");
+        links.prepend("<p class='ref'>" + data + "</p><a class='view btn2' href='" + data + "'>view page</a><a class = 'download btn3'>download page</a>");
 
     });
 
@@ -103,7 +167,7 @@
     document.getElementById("submit").addEventListener('click', function(event) {
 
 
-        socket.emit('my other event', [document.getElementById('url').value, document.getElementById('url').value]);
+        socket.emit('submit', [document.getElementById('url').value, document.getElementById('url').value]);
 
 
     });
