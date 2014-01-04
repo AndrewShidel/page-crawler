@@ -1,5 +1,4 @@
-var Crawler = require("crawler").Crawler,
-AdmZip = require('adm-zip');
+var Crawler = require("crawler").Crawler;
 
 function crawl(connection, site) {
 	var term = "the";

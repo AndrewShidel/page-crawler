@@ -92,10 +92,11 @@
     var ws = new WebSocket('ws://localhost:1234', 'echo-protocol');
 
     ws.addEventListener("message", function(e) {
-        var msg = e.data;
+        var msg = e.data,
+        contain = document.getElementById('container');
         if (msg.indexOf(":::") != -1){
             console.log("\n\n\n\n\n\n\n"+msg+"\n\n\n\n\n\n\n");
-            alert(msg);
+            contain.innerHTML += msg
         }
         console.log(msg);
     });
