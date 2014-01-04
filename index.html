@@ -89,10 +89,25 @@
     <script>
     var url;
 
-    document.getElementById("submit").addEventListener('click', function(event) {
-        url = document.getElementById('url').value
+    var ws = new WebSocket('ws://localhost:1234', 'echo-protocol');
 
-        window.location = url;
+    ws.addEventListener("message", function(e) {
+        var msg = e.data;
+        if (msg.indexOf(":::") != -1){
+            console.log("\n\n\n\n\n\n\n"+msg+"\n\n\n\n\n\n\n");
+            alert(msg);
+        }
+        console.log(msg);
+    });
+
+
+    document.getElementById("submit").addEventListener('click', function(event) {
+
+        ws.send(document.getElementById('url').value);
+
+        //url = document.getElementById('url').value
+
+        //window.location = url;
 
     });
     </script>

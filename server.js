@@ -1,38 +1,30 @@
 var express = require('express'),
     http = require('http'),
     url = require("url"),
-    app = express(),
-    server = http.createServer(app),
+    server = http.createServer(function(request, response) {}),
     spider = require("./spider"),
     site;
 
-
-
-function start(){
-
-app.get('/', function(request, response) {
-    response.sendfile(__dirname + '/index.html');
+server.listen(1234, function() {
+    console.log((new Date()) + ' Server is listening on port 1234');
 });
 
-app.get(/\/d\//, function(request, response) {
-    console.log(request);
-    response.sendfile(request);
+var WebSocketServer = require('websocket').server;
+wsServer = new WebSocketServer({
+    httpServer: server
 });
 
-app.get("*", function(request, response) {
-    var p_url;
-    if (request != 'localhost:3000') {
-        p_url = (url.parse(request.url).pathname).replace(/^\//, '');
-        if (p_url.indexOf('http://') != 0) {
-            site = 'http://' + p_url;
-        } else {
-            site = (url.parse(request.url).pathname)
-        }
-        spider.crawl(response, site)
-    }
+wsServer.on('request', function(r){
+    // Code here to run on connection
+    var connection = r.accept('echo-protocol', r.origin);
+
+    // Create event listener
+    connection.on('message', function(message) {
+
+        spider.crawl(connection, message.utf8Data);
+
+    })
 
 });
-app.listen(3000);
-}
 
-exports.start = start;
+//exports.start = start;
