@@ -118,8 +118,14 @@
         -webkit-box-shadow: inset 0 -2px #D44545;
         box-shadow: inset 0 -2px #D44545;
     }
-    .cancel:hover {border: none;
-        outline: none;}
+    .cancel:hover {
+        border: none;
+        outline: none;
+    }
+    .cancel:active,.cancel:focus {
+        top: -119px;
+        border: none;
+    }
     .download {
         width: 11%;
         display: inline-block;
@@ -186,6 +192,9 @@
         socket.emit('submit', [document.getElementById('url').value, document.getElementById('term').value, host[1]]);
 
 
+    });
+    document.getElementById("cancel").addEventListener('click', function(event) {
+        socket.disconnect();
     });
     </script>
 </body>

@@ -6,11 +6,12 @@ var express = require('express'),
     site,
     io = require('socket.io').listen(1234);
 
-io.sockets.on('connection', function (socket) {
+io.sockets.on('connection', function(socket) {
+
+    socket.on('submit', function(data) {
+        spider.crawl(socket, data);
+    });
    
-    socket.on('submit', function (data) {
-    spider.crawl(socket, data); 
-  });
 });
 
 
