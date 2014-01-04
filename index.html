@@ -76,7 +76,7 @@
         border: 0;
         border-bottom: 2px solid #115372;
         cursor: pointer;
-        -webkit-box-shadow: inset 0 -2px #219D55;
+        -webkit-box-shadow: inset 0 -2px #115372;
         box-shadow: inset 0 -2px #115372;
         border-radius: 10px;
         text-decoration: none;
@@ -110,6 +110,16 @@
         -webkit-box-shadow: none;
         box-shadow: none;
     }
+    .cancel {
+        top: -119px;
+        left: 205px;
+        background: #FF4C4C;
+        border-bottom: 2px solid #D44545;
+        -webkit-box-shadow: inset 0 -2px #D44545;
+        box-shadow: inset 0 -2px #D44545;
+    }
+    .cancel:hover {border: none;
+        outline: none;}
     .download {
         width: 11%;
         display: inline-block;
@@ -137,13 +147,16 @@
         <h1>Node.js Page Retriever</h1>
         </br>
         </br>
-        <h3>Enter desired URL</h3>
+        <h3>Enter Desired URL</h3>
 
         <input type='text' value="" id='url'></input>
         <h3>And Search Term</h3>
         <input type='text' value="" id='term'></input>
         <p id='submit'>
             <input type="submit" value="Submit" class="btn">
+        </p>
+        <p id='cancel'>
+            <input type="submit" value="Cancel" class="btn cancel">
         </p>
 
         <div id='linkHold'>
