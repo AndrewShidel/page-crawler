@@ -122,6 +122,10 @@
     .ref {
         display: inline-block;
         width: 40%;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        overflow:hidden;
+        margin-top: 15px;
     }
     </style>
 
@@ -158,7 +162,7 @@
     socket.on('hit', function(data) {
         console.log(data);
 
-        links.prepend("<p class='ref'>" + data + "</p><a class='view btn2' href='" + data + "'>view page</a><a class = 'download btn3'>download page</a>");
+        links.prepend("<div class='ref'>" + data + "</div><a class='view btn2' href='" + data + "'>view page</a><a class = 'download btn3'>download page</a>");
 
     });
 
