@@ -143,6 +143,9 @@
         overflow:hidden;
         margin-top: 15px;
     }
+    .fade {
+        opacity: 0;
+    }
     </style>
 
 </head>
@@ -181,9 +184,10 @@
 
     socket.on('hit', function(data) {
 
-            links.prepend("<div class='ref'>" + data + "</div><a class='view btn2' href='" + data + "'>view page</a><a class = 'download btn3'>download page</a>");
+        links.prepend("<div class='ref fade'>" + data + "</div><a class='view btn2 fade' href='" + data + "'>view page</a><a class = 'download btn3 fade'>download page</a>");
+        $('.fade').fadeTo("fast", 1);
 
-        
+
 
     });
 
@@ -191,8 +195,10 @@
     document.getElementById("submit").addEventListener('click', function(event) {
         if (init == false) {
             var host = (document.getElementById('url').value).match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+
             socket.emit('submit', [document.getElementById('url').value, document.getElementById('term').value, host[1]]);
             init = true
+
         }
 
     });
