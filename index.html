@@ -122,7 +122,7 @@
         border: none;
         outline: none;
     }
-    .cancel:active,.cancel:focus {
+    .cancel:active, .cancel:focus {
         top: -119px;
         border: none;
     }
@@ -176,25 +176,29 @@
 
     <script>
     var links = $("#linkHold"),
-        socket = io.connect('//localhost:1234');
+        socket = io.connect('//localhost:1234'),
+        init = false;
 
     socket.on('hit', function(data) {
-        console.log(data);
 
-        links.prepend("<div class='ref'>" + data + "</div><a class='view btn2' href='" + data + "'>view page</a><a class = 'download btn3'>download page</a>");
+            links.prepend("<div class='ref'>" + data + "</div><a class='view btn2' href='" + data + "'>view page</a><a class = 'download btn3'>download page</a>");
+
+        
 
     });
 
 
     document.getElementById("submit").addEventListener('click', function(event) {
-
-        var host = (document.getElementById('url').value).match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
-        socket.emit('submit', [document.getElementById('url').value, document.getElementById('term').value, host[1]]);
-
+        if (init == false) {
+            var host = (document.getElementById('url').value).match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+            socket.emit('submit', [document.getElementById('url').value, document.getElementById('term').value, host[1]]);
+            init = true
+        }
 
     });
     document.getElementById("cancel").addEventListener('click', function(event) {
         socket.disconnect();
+        init = false
     });
     </script>
 </body>
