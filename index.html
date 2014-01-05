@@ -194,11 +194,31 @@
 
     document.getElementById("submit").addEventListener('click', function(event) {
         if (init == false) {
-            var host = (document.getElementById('url').value).match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+            var url = document.getElementById('url').value,
+                valid = /^(ftp|http|https):\/\/[^ "]+$/.test(url);
 
-            socket.emit('submit', [document.getElementById('url').value, document.getElementById('term').value, host[1]]);
-            init = true
 
+            if (valid) {
+                var host = (url).match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+                socket.emit('submit', [url, document.getElementById('term').value, host[1]]);
+                init = true
+            } else {
+                url = 'http://' + url
+                valid = /^(ftp|http|https):\/\/[^ "]+$/.test(url);
+
+
+                if (valid) {
+                    var host = (url).match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+                    socket.emit('submit', [url, document.getElementById('term').value, host[1]]);
+                    init = true
+
+
+
+                }else{
+                    alert('Given URL is Not Valid');
+                }
+
+            }
         }
 
     });
