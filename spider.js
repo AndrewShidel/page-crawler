@@ -5,10 +5,10 @@ function crawl(socket, data) {
     var term = data[1];
     var root = data[2],
         next = true;
-    console.log('data::'+data)
+    results = [];
+    console.log('data::' + data)
     var c = new Crawler({
         "maxConnections": 10,
-        //called after a page is crawled
         "callback": function(error, result, $) {
             if ($) {
                 var regex = new RegExp(term, "i");
@@ -20,13 +20,20 @@ function crawl(socket, data) {
                     }
                 }
 
-                $("a").each(function(index, a) {
-                    if (url.parse(a.href).hostname == root && next){
-                        c.queue(a.href);
-                    }
-                });
+                if (next) {
+                    $("a").each(function(index, a) {
+                        var ref = a.href;
+                        if (url.parse(ref).hostname == root) {
+                            if (results.indexOf(ref) == -1) {
+                                c.queue(ref);
+                                results.push(ref);
+                            }
+                        }
+                    });
+                }
+            }
 
-                /*
+            /*
                     if (result) {
                         var page = result.body,
                         temp = page.match(/(src|href)\s*=\s*"([^"]*)"/g);
@@ -45,14 +52,13 @@ function crawl(socket, data) {
 
 
 
-            }
         }
 
     });
 
     c.queue(data[0]);
 
-    socket.on('disconnect', function () {
+    socket.on('disconnect', function() {
         next = false;
     });
 }
