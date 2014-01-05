@@ -24,7 +24,8 @@ function crawl(socket, data) {
                     $("a").each(function(index, a) {
                         var ref = a.href;
                         if (url.parse(ref).hostname == root) {
-                            if (results.indexOf(ref) == -1) {
+                            console.log(results.indexOf(ref) == -1);
+                            if (!contains(results, ref)) {
                                 c.queue(ref);
                                 results.push(ref);
                             }
@@ -62,5 +63,14 @@ function crawl(socket, data) {
         next = false;
     });
 }
+
+
+function contains(arr, key){
+    for (var i = 0; i < arr.length; i++){
+        if (arr[i] == key) return true;
+    }
+    return false;
+}
+
 
 exports.crawl = crawl;
