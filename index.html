@@ -179,23 +179,20 @@
 
     <script>
     var links = $("#linkHold"),
-        socket = io.connect('//localhost:1234'),
+
         init = false;
 
-    socket.on('hit', function(data) {
 
-        links.prepend("<div class='ref fade'>" + data + "</div><a class='view btn2 fade' href='" + data + "' target='_blank'>view page</a><a class = 'download btn3 fade' href='http://localhost:3000/"+data+"'>download page</a>");
-        $('.fade').fadeTo("fast", 1);
-
-
-
-    });
 
 
     document.getElementById("submit").addEventListener('click', function(event) {
         if (init == false) {
+            links.empty();
             var url = document.getElementById('url').value,
-                valid = /^(ftp|http|https):\/\/[^ "]+$/.test(url);
+                valid = /^(ftp|http|https):\/\/[^ "]+$/.test(url),
+                socket = io.connect('//localhost:1234', {
+                    'force new connection': true
+                });
 
 
             if (valid) {
@@ -214,17 +211,28 @@
 
 
 
-                }else{
+                } else {
                     alert('Given URL is Not Valid');
                 }
 
             }
+            socket.on('hit', function(data) {
+
+                links.prepend("<div class='ref fade'>" + data + "</div><a class='view btn2 fade' href='" + data + "' target='_blank'>view page</a><a class = 'download btn3 fade' href='http://localhost:3000/" + data + "'>download page</a>");
+                $('.fade').fadeTo("fast", 1);
+
+
+
+            });
+
+            document.getElementById("cancel").addEventListener('click', function(event) {
+                socket.disconnect();
+                init = false
+            });
+
+
         }
 
-    });
-    document.getElementById("cancel").addEventListener('click', function(event) {
-        socket.disconnect();
-        init = false
     });
     </script>
 </body>
