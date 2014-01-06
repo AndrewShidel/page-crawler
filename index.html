@@ -184,7 +184,7 @@
 
     socket.on('hit', function(data) {
 
-        links.prepend("<div class='ref fade'>" + data + "</div><a class='view btn2 fade' href='" + data + "'>view page</a><a class = 'download btn3 fade'>download page</a>");
+        links.prepend("<div class='ref fade'>" + data + "</div><a class='view btn2 fade' href='" + data + "' target='_blank'>view page</a><a class = 'download btn3 fade' href='http://localhost:3000/"+data+"'>download page</a>");
         $('.fade').fadeTo("fast", 1);
 
 

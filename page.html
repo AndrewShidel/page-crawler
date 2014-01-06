@@ -1,0 +1,406 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable = no">
+<link rel="stylesheet" type="text/css" href="/shidel/shidel2.css" >
+
+<title>Andrew and Joeseph Shidel's Developmet Showcase</title>
+
+<meta name="keywords" content="Andrew, Joe, Joeseph, Shidel, Development, Dev">
+<meta name="description" content="Pittsburgh web developers Andrew Shidel and Joe Shidel's development portfolio. We use HMTL5, PHP, Javascript, JQuery, Python, Ruby on Rails, CSS3, and MYSQL to create web sites, mobile apps, desktop apps, and backend development. ">
+
+
+<script>
+
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36751755-2', 'shidel.com');
+  ga('send', 'pageview');
+
+</script>
+
+
+</head>
+ 
+ 
+ 
+<body>
+	<div class='header' id='header'>
+			<span id='banner' onclick="location.href='http://www.shidel.com'" ><span class='inner'>SHIDEL.dev</span></span>
+			<span id="about"><span class='inner'>About Us</span></span>
+			<span id="projects"><span class='inner'>Projects</span></span>
+			<span id="articles"><span class='inner'>Articles</span></span>
+			<img id="nav" src="/shidel/threelines.png" />
+
+		</div>	
+	
+<div id='container'>
+	
+<div id="drop">	
+		<div id='d1' ><span id="inner">About Us</span></div>
+		<div id='d2' ><span id="inner">Projects</span></div>
+		<div id='d3' ><span id="inner">Articles</span></div>
+	
+	</div>
+
+ 
+
+		
+		<div class='column2'>
+			<img id='andrew' alt="Andrew Shidel" src="/shidel/andrew.png" />
+			<img id='joe' alt="Joe Shidel" src="/shidel/Joe.png" />
+		
+			<div id='nTag1'class='name'>Andrew </div>
+			<div id='nTag2'class='name'>Joe</div>
+			
+			
+			
+		
+		</div>
+	
+	
+	<div class='column1'>
+	<iframe src="" id='data' class='data' scrolling="yes" frameborder="0"  ></iframe>
+	
+	</div>	
+	<div class='column3'>
+	<span id='pholder'>
+	<img class='project' alt="Chrome Leap Tools Extension" id='leap' src="/shidel/leap.png"/>
+
+
+	<img class='project' alt="Green Screen Photography Android App" id='green'  src="/shidel/green.png"/>
+
+
+	<img class='project' alt="Tab Out! Chrome Extension" id='tabbed' src="/shidel/tabbed.png"/>
+
+	<img class='project' alt="Opened Fire HTML5 video game" id='opened' src="/shidel/opened.jpg"/>
+
+	<img class='project' alt="Moby Menu" id='moby' src="/shidel/mobymenu.png"/>
+	
+	
+
+	</span>
+	
+	<span id='aholder'>
+	<div class="card" id="flw" onclick="location.href='http://www.shidel.com/flw.html'">What Web Designers Can Learn From Frank Lloyd Wright.</div>
+<!--	<div class="card" id="voice">Implimenting Webkit Speech Recognition </div>-->
+	<div class="card" id="launcher">Replicating Google's App Launcher</div>
+	
+	<div class="card" id="speech">Speech to text using JavaScript</div>
+	
+	<div class="card" id="classes">Custom Data Types in JavaScript</div>
+	
+	<div class="card" id="search">Javascript Algorithms for Searching and Sorting</div>
+	
+	<div class="card" id="tags">Creating Custom HTML Tags</div>
+	
+	
+	
+	
+	</span>
+</div>
+	
+</div>
+
+ 
+</body>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>
+var a=1;
+var j=1;
+var p=1;
+var heads=1;
+var ar=1;
+var dropped = false;
+var winW;
+var winH;
+
+
+
+window.onload=function(){
+var drop=document.getElementById("drop");
+var pholder=document.getElementById('pholder');
+var aholder=document.getElementById('aholder');
+var joe=document.getElementById("joe");
+var andrew=document.getElementById("andrew");
+var ntag1=document.getElementById('nTag1');
+var ntag2=document.getElementById('nTag2');
+var data= document.getElementById("data");
+var project= document.getElementsByClassName('project');
+var article =  document.getElementsByClassName('card');
+var main = document.getElementById("column1");
+
+
+if (location.hash == "#customTypes"){
+	data.src = "/shidel/customData.html"
+}else if(location.hash == "#customTags"){
+	data.src = "/shidel/customTags.html"
+}else if(location.hash == "#searching-and-sorting"){
+	data.src = "/shidel/search.html"
+}else if(location.hash == "#joe"){
+	data.src = "/shidel/joe.html"	
+}else if(location.hash == "#andrew"){
+	data.src = "/shidel/andrew.html"	
+}else if(location.hash== "#gLauncher"){
+	data.src = "/shidel/launcher/launcher.html"	
+}else if(location.hash== "#speach-to-text"){
+	data.src = "/shidel/speach-to-text.html"	
+}
+else{
+	data.src = "/shidel/dj.html"
+	location.hash="";
+}
+	
+sizer();
+
+	
+document.getElementById('nav').addEventListener('click', function(event) {
+	
+	
+	
+	
+	if (!dropped){
+		drop.style.display='block';
+		drop.className = "show";
+		dropped = true;
+	}else{
+		drop.className = "dismiss";
+		dropped = false;
+		drop.style.display='none';
+	}
+
+	document.getElementsByTagName('body')[0].addEventListener('click', function(event) {
+
+		if (event.target.id !=='nav'|| event.target.id  == 'data')
+		{
+
+			drop.className = "dismiss";
+			dropped = false;
+
+		}
+
+
+	})
+	
+});
+
+drop.addEventListener('click',function(event){
+var el=$(event.target).parent();	
+var id=$(el).attr('id');
+
+if (id=='d1'){
+
+data.src="/shidel/about.html"
+
+
+}
+
+else if (id=='d2'){
+data.src="/shidel/projects.html"
+
+}
+
+else{
+data.src="/shidel/articles.html"
+
+
+}
+
+
+});
+console.log(project);
+for (var e = 0; e < project.length; e++)  {
+
+project[e].addEventListener('click',function(event) {
+
+var el=$(event.target).attr('id');
+
+
+if (el=='green'){
+
+window.location.href='https://play.google.com/store/apps/details?id=tucker.shidel.greenscreen&hl=en'
+
+}else if (el=='leap'){
+
+window.location.href='https://github.com/shidel-dev/Chrome-Leap-Tools'
+
+}else if (el=='tabbed'){
+
+window.location.href='https://github.com/shidel-dev/tabbed-out'
+
+}else if (el=='opened'){
+	
+window.location.href='http://openedfire.com'
+	
+}
+
+
+
+
+	})
+};
+
+
+
+for (var i=0; i<article.length; i++ ){
+	article[i].addEventListener('click',arcl)
+}
+		function arcl(event){
+		
+		var el=$(event.target).attr('id');	
+		
+		
+		if (el == 'tags'){
+			 data.src = 'shidel/customTags.html';
+			 location.href = "#customTags";
+		}else if (el == 'classes'){
+			 data.src = 'shidel/customData.html';
+			 location.href = "#customTypes";
+		}else if (el == 'search'){
+			 data.src = 'shidel/search.html';
+			 location.href = "#searching-and-sorting";
+		}else if (el == 'launcher'){
+			 data.src = 'shidel/launcher/launcher.html';
+			 location.href = "#gLauncher";
+		}else if (el == 'speech'){
+			 data.src = 'shidel/speach-to-text.html';
+			 location.href = "#speach-to-text";
+		}
+		 
+	};	
+		
+
+
+
+document.getElementById('header').addEventListener('click', function(event) {
+var el=$(event.target).parent();	
+var id=$(el).attr('id');
+console.log(ar,p)
+if (id=='projects'){
+
+if (p==1 || ar==2)
+{
+
+$(".column1").animate({left:"0%"}); 
+
+pholder.style.marginLeft='0%';
+aholder.style.marginLeft='100%';	
+p=2;
+ar=1
+}
+
+else if (p==2)
+{
+pholder.style.marginLeft='100%';
+$(".column1").animate({left:"9%"}); 
+p=1;
+
+}
+	
+}
+if (id=='articles'){
+if (ar==1 || p==2)
+{
+$(".column1").animate({left:"0%"}); 	
+aholder.style.marginLeft='0%';
+pholder.style.marginLeft='100%';
+ar=2;
+p=1
+}
+
+else if (ar==2)
+{
+aholder.style.marginLeft='100%';
+$(".column1").animate({left:"9%"}); 
+ar=1;
+}
+	
+}
+if(id=='about'){
+joe.addEventListener('click', function(event) {
+joe.className = "up";
+andrew.className = "up";	
+ntag1.style.display='none';
+ntag2.style.display='none';
+
+heads=1;
+data.src='/shidel/joe.html';
+location.href = "#joe";
+})
+
+andrew.addEventListener('click', function(event) {
+
+joe.className = "up";
+andrew.className = "up";	
+ntag1.style.display='none';
+ntag2.style.display='none';
+
+heads=1;
+data.src='/shidel/andrew.html';
+location.href = "#andrew";
+})
+
+	
+if (heads==1){
+aholder.style.marginLeft='100%';
+pholder.style.marginLeft='100%';
+$(".column1").animate({left:"18%"}); 
+
+joe.className = "bounce";
+andrew.className = "bounce";
+ntag1.style.display='block';
+ntag2.style.display='block';
+heads=2;
+ar=1
+p=1
+}
+
+else
+{
+joe.className = "up";
+andrew.className = "up";	
+ntag1.style.display='none';
+ntag2.style.display='none';
+$(".column1").animate({left:"9%"}); 
+heads=1;
+
+}
+}
+});
+
+
+
+
+
+
+
+window.onresize=function(){
+	sizer();
+};
+
+function sizer(){
+
+ winW = $(window).width();
+ winH =$(window).height();
+$('#container').css({'width':winW+'px','height':winH+'px'});
+
+
+$('.specs').css({'margin-top':($('.column2').width())*(32/100)+49+'px'});  
+$('#point').css({'margin-top':($('.column2').width())*(32/100)+24+'px'});  
+$('.name').css({'margin-top':($('.column2').width())*(27/100)+13+'pt'});  
+
+
+
+
+
+}};
+
+</script>
+
+</html>
