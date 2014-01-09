@@ -1,5 +1,6 @@
 var Crawler = require("crawler").Crawler,
-    url = require('url');
+    url = require('url'),
+    download = require("./download");
 
 function crawl(socket, data) {
     var term = new RegExp(data[1], "i"),
@@ -65,6 +66,8 @@ function crawl(socket, data) {
     socket.on('disconnect', function() {
         next = false;
     });
+
+    socket.on('download', function(data){download.get_source(data)})
 }
 
 
