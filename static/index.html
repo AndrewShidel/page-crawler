@@ -214,7 +214,7 @@
             }
             socket.on('hit', function(data) {
 
-                links.prepend("<div class='ref fade'>" + data + "</div><a class='view btn2 fade' href='" + data + "' target='_blank'>view page</a><a class = 'download btn3 fade' name ='" + data + "'>download page</a>");
+                links.prepend("<div class='ref fade'>" + data + "</div><a class='view btn2 fade' href='" + data + "' target='_blank'>view page</a><a class = 'download btn3 fade' href ='/download/" + data + "'>download page</a>");
                 $('.fade').fadeTo("fast", 1);
 
 
@@ -234,16 +234,7 @@
     $('.download').on('click', request_page)
 
     function request_page(event) {
-
-        if (init) {    
-        socket.emit('download', event.target.getAttribute("name"));
-        } else {
-            socket = io.connect('//localhost:1234', {
-                'force new connection': true
-            });
-            console.log('ok')
-            socket.emit('download', event.target.getAttribute("name"));
-        }
+      
     }
     </script>
 
