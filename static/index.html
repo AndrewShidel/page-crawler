@@ -1,0 +1,254 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script src="socket.io.min.js"></script>
+    <script src="jquery.js"></script>
+    <style type="text/css">
+    body {
+        background-color:#F8F8F8;
+        font-family: Tahoma, Geneva, sans-serif;
+    }
+    #container {
+        width:1200px;
+        margin:auto;
+    }
+    h3 {
+        width:100%;
+        text-align: center;
+    }
+    h1 {
+        width:100%;
+        text-align: center;
+    }
+    input {
+        width: 300px;
+        margin-left: 450px;
+        height: 17px;
+        border: 2px solid #006;
+        border-radius: 4px;
+    }
+    input:hover {
+        border: 2px solid #27ae60;
+        outline: none;
+    }
+    input:focus {
+        border: 2px solid #27ae60;
+        outline: none;
+    }
+    .btn {
+        position: relative;
+        vertical-align: top;
+        width: 100px;
+        height: 51px;
+        padding: 0;
+        font-size: 18px;
+        color: white;
+        text-align: center;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        background: #27ae60;
+        border: 0;
+        border-bottom: 2px solid #219d55;
+        cursor: pointer;
+        -webkit-box-shadow: inset 0 -2px #219d55;
+        box-shadow: inset 0 -2px #219d55;
+        border-radius: 10px;
+    }
+    .btn:active {
+        top: 1px;
+        outline: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    #submit {
+        padding-bottom: 51px;
+        border-bottom: 1px solid;
+    }
+    .btn2 {
+        height: 32px;
+        line-height: 27px;
+        padding: 0;
+        font-size: 18px;
+        color: #FFF;
+        text-align: center;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        background: #28759A;
+        border: 0;
+        border-bottom: 2px solid #115372;
+        cursor: pointer;
+        -webkit-box-shadow: inset 0 -2px #115372;
+        box-shadow: inset 0 -2px #115372;
+        border-radius: 10px;
+        text-decoration: none;
+    }
+    .btn2:active {
+        top: 1px;
+        outline: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    .btn3 {
+        position: relative;
+        height: 32px;
+        line-height: 27px;
+        padding: 0;
+        font-size: 18px;
+        color: #FFF;
+        text-align: center;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        background: #27AE60;
+        border: 0;
+        border-bottom: 2px solid #219D55;
+        cursor: pointer;
+        -webkit-box-shadow: inset 0 -2px #219D55;
+        box-shadow: inset 0 -2px #219D55;
+        border-radius: 10px;
+    }
+    .btn3:active {
+        top: 1px;
+        outline: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    .cancel {
+        top: -119px;
+        left: 205px;
+        background: #FF4C4C;
+        border-bottom: 2px solid #D44545;
+        -webkit-box-shadow: inset 0 -2px #D44545;
+        box-shadow: inset 0 -2px #D44545;
+    }
+    .cancel:hover {
+        border: none;
+        outline: none;
+    }
+    .cancel:active, .cancel:focus {
+        top: -119px;
+        border: none;
+    }
+    .download {
+        width: 11%;
+        display: inline-block;
+    }
+    .view {
+        width: 8%;
+        display: inline-block;
+        margin-right: 22%;
+    }
+    .ref {
+        display: inline-block;
+        width: 40%;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        overflow:hidden;
+        margin-top: 15px;
+    }
+    .fade {
+        opacity: 0;
+    }
+    </style>
+
+</head>
+
+<body>
+
+    <div id='container'>
+        <h1>Go Get It</h1>
+        </br>
+        </br>
+        <h3>Enter Desired URL</h3>
+
+        <input type='text' value="" id='url'></input>
+        <h3>And Search Term</h3>
+        <input type='text' value="" id='term'></input>
+        <p id='submit'>
+            <input type="submit" value="Submit" class="btn">
+        </p>
+        <p id='cancel'>
+            <input type="submit" value="Cancel" class="btn cancel">
+        </p>
+
+        <div id='linkHold'>
+
+        </div>
+
+
+
+
+    </div>
+
+    <script>
+    var links = $("#linkHold"),
+        init = false;
+
+    document.getElementById("submit").addEventListener('click', function(event) {
+        if (init == false) {
+            links.empty();
+            var url = document.getElementById('url').value,
+                valid = /^(ftp|http|https):\/\/[^ "]+$/.test(url),
+                socket = io.connect('//localhost:1234', {
+                    'force new connection': true
+                });
+
+
+            if (valid) {
+                var host = (url).match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+                socket.emit('submit', [url, document.getElementById('term').value, host[1]]);
+                init = true
+            } else {
+                url = 'http://' + url
+                valid = /^(ftp|http|https):\/\/[^ "]+$/.test(url);
+
+
+                if (valid) {
+                    var host = (url).match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+                    socket.emit('submit', [url, document.getElementById('term').value, host[1]]);
+                    init = true
+
+
+
+                } else {
+                    alert('Given URL is Not Valid');
+                }
+
+            }
+            socket.on('hit', function(data) {
+
+                links.prepend("<div class='ref fade'>" + data + "</div><a class='view btn2 fade' href='" + data + "' target='_blank'>view page</a><a class = 'download btn3 fade' name ='" + data + "'>download page</a>");
+                $('.fade').fadeTo("fast", 1);
+
+
+
+            });
+
+            document.getElementById("cancel").addEventListener('click', function(event) {
+                socket.disconnect();
+                init = false
+            });
+
+
+        }
+
+    });
+
+    $('.download').on('click', request_page)
+
+    function request_page(event) {
+
+        if (init) {    
+        socket.emit('download', event.target.getAttribute("name"));
+        } else {
+            socket = io.connect('//localhost:1234', {
+                'force new connection': true
+            });
+            console.log('ok')
+            socket.emit('download', event.target.getAttribute("name"));
+        }
+    }
+    </script>
+
+
+
+</body>
+
+</html>
