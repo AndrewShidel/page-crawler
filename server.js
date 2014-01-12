@@ -13,9 +13,11 @@ console.log('Listening on port 3000');
 
 app.use(express.static(__dirname + '/static'));
 
-app.get('download/', function(req, res) {
-    console.log(req.params[0].substring(1));
-    getSource(req.params[0].substring(1), res);
+app.get('*', function(req, res) {
+    //console.log("Param: " + req.params[0].substring(1));
+    console.log("called");
+    console.log(req.params[0].substring(10))
+    getSource(req.params[0].substring(10), res);
 });
 
 
@@ -31,6 +33,7 @@ function getSource(uri, res) {
             fs.writeFile("temp/" + n, body, function(err) {
                 if (err) throw err;
                 res.download('./temp/' + n, "page.html");
+                setTimeout(function(){fs.unlink("./temp/"+n)},1000);
             });
         }
     });
