@@ -7,8 +7,7 @@ function crawl(socket, data) {
         root = data[2],
         next = true,
         results = [];
-    console.log('data::' + data)
-    var c = new Crawler({
+        var c = new Crawler({
         "maxConnections": 10,
         "callback": function(error, result, $) {
             if ($) {
@@ -24,8 +23,6 @@ function crawl(socket, data) {
                     $("a").each(function(index, a) {
                         var ref = a.href;
                         if (url.parse(ref).hostname == root) {
-                            console.log(results.indexOf(ref) == -1);
-
                             if (!contains(results, ref)) {
 
                                 c.queue(ref);
@@ -62,7 +59,6 @@ function crawl(socket, data) {
 
     c.queue(data[0]);
     results.push(data[0])
-    console.log('this')
     socket.on('disconnect', function() {
         next = false;
     });

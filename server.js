@@ -8,6 +8,7 @@ var express = require('express'),
 
 
 
+
 app.listen(3000);
 console.log('Listening on port 3000');
 
@@ -15,8 +16,7 @@ app.use(express.static(__dirname + '/static'));
 
 app.get('*', function(req, res) {
     //console.log("Param: " + req.params[0].substring(1));
-    console.log("called");
-    console.log(req.params[0].substring(10))
+    console.log(req.params[0].substring(10));
     getSource(req.params[0].substring(10), res);
 });
 
@@ -24,22 +24,30 @@ app.get('*', function(req, res) {
 function getSource(uri, res) {
 
     var d = new Date();
-    var n = d.getTime()
+    var n = d.getTime();
     n = n + '.html'
 
     request(uri, function(error, response, body) {
         if (!error && response.statusCode == 200) {
-            //res.send(body)
+            var r = /src\s*=\s*"([^"]*)"/g;
+            var matches = body.match(r);
+            
+            for (var match in matches) {
+               console.log(matches[match])
+            }
+
             fs.writeFile("temp/" + n, body, function(err) {
                 if (err) throw err;
                 res.download('./temp/' + n, "page.html");
-                setTimeout(function(){fs.unlink("./temp/"+n)},1000);
+                setTimeout(function() {
+                    fs.unlink("./temp/" + n)
+                }, 1000);
             });
-        }
+        };
     });
 }
 
-io = require('socket.io').listen(1234);
+var io = require('socket.io').listen(1234);
 
 io.sockets.on('connection', function(socket) {
 
