@@ -40,13 +40,12 @@ function getSource(uri, res, first, count, callback) {
     //Get the source of the url.
     request(uri, function(error, response, body) {
         if (!error && response.statusCode == 200) {
-
             //If this is not the top level in recursion, then add the contents to the zip
             if (!first){   
                 //Add the file contents and the filename to an array that will later be added to the .zip
                 toAdd.push(body);
                 toAdd.push(count + uri.substring(uri.lastIndexOf(".")));
-
+                //fs.writeFileSync('temp/'+d.getTime()+".jpg", body, 'binary');
                 //Call callback to signify the end of this iteration
                 callback();                
             }
@@ -68,8 +67,10 @@ function getSource(uri, res, first, count, callback) {
                 for (var i = 0; i < matches.length; i++) {
                    
                    //Get what is in between the quotes.
-                   var inner = matches[i].substring(matches[i].toLowerCase().indexOf("=")+2, matches[i].length-1);
-                   
+                   //var inner = matches[i].substring(matches[i].toLowerCase().indexOf("=")+2, matches[i].length-1);
+                   var inner = matches[i].match(/([""'])(?:(?=(\\?))\2.)*?\1/)[0];
+                   inner = inner.substring(1, inner.length-1);
+
                    //Replace the file name in the page with the local version
                    body.replace(inner, count+1 + "." + inner.substring(inner.lastIndexOf(".")));
                    
@@ -77,6 +78,8 @@ function getSource(uri, res, first, count, callback) {
                    if (inner.indexOf("http") == -1){
                         inner = ruri.protocol + "//" + ruri.host + (ruri.path[0]!="/"?ruri.path.substring(1):ruri.path) + (inner[0]=="/"?inner.substring(1):inner) 
                    }
+
+                   //request(inner).pipe(fs.createWriteStream("./temp/"+(new Date()).getTime()+".jpg"))
                    
                    //recursive call to get page's resources.
                    getSource(inner, null, false, count++, function(){
@@ -94,7 +97,7 @@ function getSource(uri, res, first, count, callback) {
 
 //This function is called once from getSource to create a .zp file and initiate a download.
 function finalize(res, body, n){
-    zip.file("index.html", body);
+    zip.file("index.html", body);    
     for (var i = 0; i < toAdd.length; i+=2){
         zip.file(toAdd[i+1], toAdd[i], {base64: true});
     }

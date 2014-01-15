@@ -33,26 +33,6 @@ function crawl(socket, data) {
                     });
                 }
             }
-
-            /*
-                    if (result) {
-                        var page = result.body,
-                        temp = page.match(/(src|href)\s*=\s*"([^"]*)"/g);
-
-                        for (var i = 0; i < temp.length; i++) {
-
-                            var match = temp[i].match(/"(.+)"$/)
-                            if (match){
-                                res[res.length] = match[1];
-                            }
-
-
-
-                    }
-                }*/
-
-
-
         }
 
     });
