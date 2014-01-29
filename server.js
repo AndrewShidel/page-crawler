@@ -95,6 +95,22 @@ function getSource(uri, res, first, count, callback) {
     });
 }
 
+//Converts an relative path into an absolute path.
+function absolute(base, relative) {
+    var stack = base.split("/"),
+        parts = relative.split("/");
+    stack.pop(); 
+    for (var i=0; i<parts.length; i++) {
+        if (parts[i] == ".")
+            continue;
+        if (parts[i] == "..")
+            stack.pop();
+        else
+            stack.push(parts[i]);
+    }
+    return stack.join("/");
+}
+
 //This function is called once from getSource to create a .zp file and initiate a download.
 function finalize(res, body, n){
     zip.file("index.html", body);    
