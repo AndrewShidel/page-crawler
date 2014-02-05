@@ -4,7 +4,11 @@ var express = require('express'),
     request = require('request'),
     http = require("http"),
     fs = require('fs'),
-    url = require('url');
+    url = require('url'),
+    current;
+
+var archiver = require('archiver');
+
 
 //Initialize variables for zippping files.
 var zip = new require('node-zip')();
@@ -34,8 +38,11 @@ app.get('*', function(req, res) {
 function getSource(uri, res, first, count, callback) {
     //Setup a filename for the temporary file.
     var d = new Date();
+    if (first)current = d.getTime();
     var n = d.getTime();
     n = n + '.zip'
+    if (first)fs.mkdirSync("./temp/"+current+"/");
+    console.log("#" + count +"  Getting: " + uri );
 
     //Get the source of the url.
     request(uri, function(error, response, body) {
@@ -43,7 +50,12 @@ function getSource(uri, res, first, count, callback) {
             //If this is not the top level in recursion, then add the contents to the zip
             if (!first){   
                 //Add the file contents and the filename to an array that will later be added to the .zip
-                toAdd.push(body);
+                //fs.writeFileSync('temp/'+d.getTime()+".jpg", new Buffer(body));
+
+                request(uri).pipe(fs.createWriteStream('./temp/'+current+"/"+count+uri.substring(uri.lastIndexOf("."))));
+
+                //toAdd.push(body);
+                toAdd.push('./temp/'+current+"/"+count+uri.substring(uri.lastIndexOf(".")))
                 toAdd.push(count + uri.substring(uri.lastIndexOf(".")));
                 //fs.writeFileSync('temp/'+d.getTime()+".jpg", body, 'binary');
                 //Call callback to signify the end of this iteration
@@ -112,16 +124,59 @@ function absolute(base, relative) {
 }
 
 //This function is called once from getSource to create a .zp file and initiate a download.
-function finalize(res, body, n){
+/*function finalize(res, body, n){
     zip.file("index.html", body);    
     for (var i = 0; i < toAdd.length; i+=2){
-        zip.file(toAdd[i+1], toAdd[i], {base64: true});
+        zip.file(toAdd[i+1], "data:image/jpg;base64,"+new Buffer(toAdd[i]).toString('base64'), {base64: true});
     }
     var data = zip.generate({base64:false,compression:'DEFLATE'});
     fs.writeFileSync('temp/'+n, data, 'binary');
     res.download('./temp/' + n, "page.zip");
     setTimeout(function() {
         //fs.unlink("./temp/" + n)
+    }, 1000);
+}*/
+
+//This function is called once from getSource to create a .zp file and initiate a download.
+function finalize(res, body, n){
+
+    
+
+    var output = fs.createWriteStream(__dirname + '/temp/' + n);
+    var archive = archiver('zip');
+
+    output.on('close', function() {
+      console.log('archiver has been finalized and the output file descriptor has closed.');
+    });
+
+    archive.on('error', function(err) {
+      throw err;
+    });
+    archive.pipe(output);
+    var through = require('through')
+
+    // Create a paused stream and buffer some data into it:
+    var stream = through().pause().queue(body).end()
+    archive.append(stream, { name: "index.html" });
+    // Now that a consumer has attached, don't forget to resume the stream:
+    stream.resume()
+    
+
+    //archive.append(stream, { name: "index.html" });
+       
+    for (var i = 0; i < toAdd.length; i+=2){
+        archive.append(fs.createReadStream(toAdd[i]), { name: toAdd[i+1] })
+    }
+    archive.finalize(function(err, bytes) {
+        if (err) {
+            throw err;
+        }
+    });
+    
+    setTimeout(function() {
+        //fs.unlink("./temp/" + n)
+        res.download(__dirname + '/temp/' + n, "page.zip");
+        toAdd = [];
     }, 1000);
 }
 
